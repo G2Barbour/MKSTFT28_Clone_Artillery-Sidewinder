@@ -6,10 +6,11 @@ SETTINGS infoSettings;
 // Reset settings data
 void infoSettingsReset(void)
 {
-  infoSettings.baudrate = 115200;
+  infoSettings.baudrate = 250000;
   infoSettings.language = ENGLISH;
   infoSettings.mode = SERIAL_TSC;
-  infoSettings.runout = 0;
+  infoSettings.runout = 1;
+  infoSettings.buzzer = 1;
   infoSettings.rotate_ui = 0;
   infoSettings.bg_color = ST7920_BKCOLOR;
   infoSettings.font_color = ST7920_FNCOLOR;

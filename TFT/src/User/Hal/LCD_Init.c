@@ -229,7 +229,7 @@ void LCD_init_RGB(void)
   LCD_WR_REG(0x29); //display on
 }
 
-#elif defined(MKS_32_V1_4)
+#elif defined(MKS_32_V1_4)  || defined(MKS_28_Clone_V1_0)
 
 void LCD_init_RGB(void) 
 {

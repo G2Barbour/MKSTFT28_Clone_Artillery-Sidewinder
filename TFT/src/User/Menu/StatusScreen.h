@@ -69,7 +69,7 @@ void gantry_inc(int n, float val);
   #define STATUS_GANTRY_YOFFSET       6
   #define INFOBOX_P1_WIDTH            75
   #define INFOBOX_P2_WIDTH            75
-#elif defined(MKS_32_V1_4)
+#elif defined(MKS_32_V1_4)  || defined(MKS_28_Clone_V1_0)
 
   #define SSICON_VAL_X0           2
   #define SSICON_VAL_Y0           47
