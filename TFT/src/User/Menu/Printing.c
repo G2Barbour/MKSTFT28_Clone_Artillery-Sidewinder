@@ -665,6 +665,100 @@ void loopCheckPrinting(void)
   }while(0);
 }
 
+bool setFilamentChange(bool is_Change)
+{
+  static bool pauseLock = false;
+  if(pauseLock)                      return false;
+  if(!isPrinting())                  return false;
+  if(infoPrinting.pause == is_Change) return false;
 
+  pauseLock = true;
+  switch (infoFile.source)
+  {
+    case BOARD_SD:
+      infoPrinting.pause = is_Change;    
+      if (is_Change){
+        request_M25();
+      } else {
+        request_M24(0);
+      }
+      break;
+      
+    case TFT_UDISK:
+    case TFT_SD:
+      while (infoCmd.count != 0) {loopProcess();}
+
+      bool isCoorRelative = coorGetRelative();
+      bool isExtrudeRelative = eGetRelative();
+      static COORDINATE tmp;
+      
+      infoPrinting.pause = is_Change;
+      if(infoPrinting.pause)
+      {
+        //restore status before pause
+        coordinateGetAll(&tmp);
+        if (isCoorRelative == true)     mustStoreCmd("G90\n");
+        if (isExtrudeRelative == true)  mustStoreCmd("M82\n");
+        
+        if (heatGetCurrentTemp(heatGetCurrentToolNozzle()) > PREVENT_COLD_EXTRUSION_MINTEMP)
+          mustStoreCmd("G1 E%.5f F%d\n", tmp.axis[E_AXIS] - FILAMENT_CHANGE_RETRACT_LENGTH, NOZZLE_PAUSE_E_FEEDRATE);
+        if (coordinateIsClear())
+        {
+          mustStoreCmd("G1 Z%.3f F%d\n", tmp.axis[Z_AXIS] + NOZZLE_PAUSE_Z_RAISE, NOZZLE_PAUSE_Z_FEEDRATE);
+          mustStoreCmd("G1 X%d Y%d F%d\n", NOZZLE_PAUSE_X_POSITION, NOZZLE_PAUSE_Y_POSITION, NOZZLE_PAUSE_XY_FEEDRATE);
+        }
+        
+        if (isCoorRelative == true)     mustStoreCmd("G91\n");
+        if (isExtrudeRelative == true)  mustStoreCmd("M83\n");
+        infoMenu.menu[++infoMenu.cur] = menuFilamentChange;
+      }
+      else
+      {
+        if (isCoorRelative == true)     mustStoreCmd("G90\n");
+        if (isExtrudeRelative == true)  mustStoreCmd("M82\n");
+        
+        if (coordinateIsClear())
+        {
+          mustStoreCmd("G1 X%.3f Y%.3f F%d\n", tmp.axis[X_AXIS], tmp.axis[Y_AXIS], NOZZLE_PAUSE_XY_FEEDRATE);
+          mustStoreCmd("G1 Z%.3f F%d\n", tmp.axis[Z_AXIS], NOZZLE_PAUSE_Z_FEEDRATE);
+        }
+        if(heatGetCurrentTemp(heatGetCurrentToolNozzle()) > PREVENT_COLD_EXTRUSION_MINTEMP)
+        
+        if (isCoorRelative == true)     mustStoreCmd("G91\n");
+        if (isExtrudeRelative == true)  mustStoreCmd("M83\n");
+      }
+      break;
+  }
+  resumeToPause(is_Change);
+  pauseLock = false;
+  return true;
+}
+
+void menuFilamentChange(void)
+{
+  u16 key_num = IDLE_TOUCH;
+  static COORDINATE tmp;
+  coordinateGetAll(&tmp);
+  popupDrawPage(bottomDoubleBtn, textSelect(LABEL_FILAMENT_CHANGE), textSelect(LABEL_FILAMENT_CHANGE_INFO), textSelect(LABEL_PURGE_MORE), textSelect(LABEL_CONTINUE));
+ 
+  while(infoMenu.menu[infoMenu.cur] == menuFilamentChange)
+  {
+    key_num = KEY_GetValue(2, doubleBtnRect);
+    switch(key_num)
+    {
+      case KEY_POPUP_CONFIRM:
+        mustStoreCmd("G1 E%.5f F%d\n", tmp.axis[E_AXIS] + FILAMENT_CHANGE_PURGE_LENGTH, FILAMENT_CHANGE_E_FEEDRATE);
+        mustStoreCmd("G92 E%.5f\n", tmp.axis[E_AXIS]);
+        mustStoreCmd("G1 F%d\n", FILAMENT_CHANGE_E_FEEDRATE);
+        break;
+
+      case KEY_POPUP_CANCEL:
+        setFilamentChange(!isPause());
+        infoMenu.cur-=1;
+        break;		
+    }
+    loopProcess();
+  }
+}
 
 

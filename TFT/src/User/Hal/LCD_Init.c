@@ -229,7 +229,7 @@ void LCD_init_RGB(void)
   LCD_WR_REG(0x29); //display on
 }
 
-#elif defined(MKS_32_V1_4)  || defined(MKS_28_Clone_V1_0)
+#elif defined(MKS_32_V1_4)  || defined(MKS_28_V1_0)
 
 #elif defined(TFT28_V3_0)
 void LCD_init_RGB(void)
@@ -558,7 +558,7 @@ void LCD_RefreshDirection(void)
 void LCD_Init(void)
 {
   LCD_HardwareConfig();
-  LCD_init_RGB();
+ // LCD_init_RGB();
   GUI_Clear(BLACK);
   Delay_ms(20);
   

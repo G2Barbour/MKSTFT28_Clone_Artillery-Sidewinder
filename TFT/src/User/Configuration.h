@@ -90,6 +90,14 @@
 #define NOZZLE_PAUSE_XY_FEEDRATE    6000 // (mm/min) X and Y axes feedrate
 #define NOZZLE_PAUSE_Z_FEEDRATE     600  // (mm/min) Z axis feedrate
 
+// Specify a filament change
+#define FILAMENT_CHANGE_E_FEEDRATE     500
+#define FILAMENT_CHANGE_RETRACT_LENGTH 100   // (mm)
+#define FILAMENT_CHANGE_PURGE_LENGTH 15
+#define FILAMENT_CHANGE_X_POSITION     (X_MIN_POS + 10)  // (mm) Must be an integer
+#define FILAMENT_CHANGE_Y_POSITION     (Y_MIN_POS + 10)
+
+
 // Send G29 for auto bed leveling
 #define AUTO_BED_LEVELING
 #ifdef AUTO_BED_LEVELING

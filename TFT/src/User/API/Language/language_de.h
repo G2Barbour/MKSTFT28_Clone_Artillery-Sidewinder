@@ -152,5 +152,7 @@
     #define DE_MOVE_SPEED           "Move speed(X Y Z)"
     #define DE_KNOB_LED             "Rotary Knob LED"
     #define DE_M0_PAUSE             "Paused by M0 command"
-    
+    #define DE_FILAMENT_CHANGE      "Filament wechsel"
+    #define DE_FILAMENT_CHANGE_INFO "Filament einsetzen"
+    #define DE_PURGE_MORE           "Extrudiere"
 #endif

@@ -24,7 +24,7 @@ void abortPrinting(void);
 
 void setM0Pause(bool m0_pause);
 bool setPrintPause(bool is_pause,bool is_m0pause);
-
+bool setFilamentChange(bool is_change);
 bool isPrinting(void);	
 bool isPause(void);
 bool isM0_Pause(void);
@@ -56,4 +56,5 @@ void reDrawTime(void);
 
 void loopCheckPrinting(void);
 
+void menuFilamentChange(void);
 #endif
