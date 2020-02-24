@@ -16,12 +16,18 @@ void infoSettingsReset(void)
   infoSettings.font_color = ST7920_FNCOLOR;
   infoSettings.silent = 0;
   infoSettings.auto_off = 0;
+  infoSettings.terminalACK = 0;
+  infoSettings.invert_yaxis = 0;
+  infoSettings.move_speed = 0;
+  infoSettings.led_color = LED_OFF;
+  infoSettings.invert_zaxis = 0;
+  
 }
 
 // Version infomation
 void menuInfo(void)
 {
-  const char* hardware = "Board   : MKS-" HARDWARE_VERSION;
+  const char* hardware = "Board   : BIGTREETECH_" HARDWARE_VERSION;
   const char* firmware = "Firmware: "HARDWARE_VERSION"." STRINGIFY(SOFTWARE_VERSION) " " __DATE__;
   
   u16 HW_X = (LCD_WIDTH - GUI_StrPixelWidth((u8 *)hardware))/2;
@@ -29,7 +35,7 @@ void menuInfo(void)
   u16 centerY = LCD_HEIGHT/2;
   u16 startX = MIN(HW_X, FW_X);
   
-  GUI_Clear(BLACK);
+  GUI_Clear(BACKGROUND_COLOR);
 
   GUI_DispString(startX, centerY - BYTE_HEIGHT, (u8 *)hardware);
   GUI_DispString(startX, centerY, (u8 *)firmware);
@@ -44,7 +50,7 @@ void menuInfo(void)
 // Set uart pins to input, free uart
 void menuDisconnect(void)
 {
-  GUI_Clear(BLACK);
+  GUI_Clear(BACKGROUND_COLOR);
   GUI_DispStringInRect(20, 0, LCD_WIDTH-20, LCD_HEIGHT, textSelect(LABEL_DISCONNECT_INFO));
   GUI_DispStringInRect(20, LCD_HEIGHT - (BYTE_HEIGHT*2), LCD_WIDTH-20, LCD_HEIGHT, textSelect(LABEL_TOUCH_TO_EXIT));
 
@@ -93,7 +99,7 @@ void menuSettings(void)
     }
   }
 
-  menuDrawPage(&settingsItems,false);
+  menuDrawPage(&settingsItems);
 
   while(infoMenu.menu[infoMenu.cur] == menuSettings)
   {
