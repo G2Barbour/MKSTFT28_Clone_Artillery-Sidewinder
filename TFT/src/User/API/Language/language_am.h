@@ -152,5 +152,7 @@
     #define AM_MOVE_SPEED           "Move speed(X Y Z)"
     #define AM_KNOB_LED             "Rotary Knob LED"
     #define AM_M0_PAUSE             "Paused by M0 command"
-
+    #define AM_FILAMENT_CHANGE      "Filament Change"
+    #define AM_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define AM_PURGE_MORE           "Purge more"
 #endif

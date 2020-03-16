@@ -152,5 +152,7 @@
     #define CN_MOVE_SPEED           "Move speed(X Y Z)"
     #define CN_KNOB_LED             "Rotary Knob LED"
     #define CN_M0_PAUSE             "Paused by M0 command"
-
+    #define CN_FILAMENT_CHANGE      "Filament Change"
+    #define CN_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define CN_PURGE_MORE           "Purge more"
 #endif

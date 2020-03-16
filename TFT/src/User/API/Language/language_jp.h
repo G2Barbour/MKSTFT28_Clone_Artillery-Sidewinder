@@ -152,5 +152,7 @@
     #define JP_MOVE_SPEED           "Move speed(X Y Z)"
     #define JP_KNOB_LED             "Rotary Knob LED"
     #define JP_M0_PAUSE             "Paused by M0 command"
-    
+    #define JP_FILAMENT_CHANGE      "Filament Change"
+    #define JP_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define JP_PURGE_MORE           "Purge more"
 #endif

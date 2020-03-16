@@ -216,7 +216,7 @@
 //ST7920 Simulator SPI pins
 #if defined(TFT24_V1_1) || defined(TFT35_V3_0) || defined(TFT28_V3_0)
   #define ST7920_SPI    _SPI2
-#elif defined(MKS_32_V1_4) 
+#elif defined(MKS_32_V1_4) || defined(MKS_28_V1_0)
   //#define ST7920_SPI    _SPI1
   //#define SPISIM_CS_PIN    PB4  
 #endif
@@ -230,7 +230,7 @@
   #define BUZZER_PIN    PD13
 #elif defined(MKS_32_V1_4) || defined(MKS_28_V1_0)
   //Keep Things quiet 
-  //#define BUZZER_PIN    PA2
+  #define BUZZER_PIN    PA2
 #endif
 
 //LCD Encoder support
@@ -265,7 +265,7 @@
 #elif defined(TFT35_V3_0) || defined(TFT28_V3_0)
   #define PS_ON_PIN      PA12
   #define FIL_RUNOUT_PIN PA15
-#elif defined(MKS_32_V1_4)  || defined(MKS_28_V1_0)
+#elif defined(MKS_32_V1_4) || defined(MKS_28_V1_0)
   #define PS_ON_PIN      PB0
   #define FIL_RUNOUT_PIN PB1
 #endif
@@ -325,7 +325,7 @@
   #define SMALLICON_HEIGHT   16
   
   #define selecticonw 70
-#elif defined(MKS_32_V1_4)  || defined(MKS_28_V1_0)
+#elif defined(MKS_32_V1_4) || defined(MKS_28_V1_0)
  #define LCD_WIDTH	  320
   #define LCD_HEIGHT	240
   

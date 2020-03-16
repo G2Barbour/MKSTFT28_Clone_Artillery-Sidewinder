@@ -152,5 +152,9 @@
     #define FR_MOVE_SPEED           "Vitesse de déplacement (X Y Z)"
     #define FR_KNOB_LED             "Rotary Knob LED"
     #define FR_M0_PAUSE             "Paused by M0 command"
+    #define FR_M0_PAUSE             "Paused by M0 command"
+    #define FR_FILAMENT_CHANGE      "Filament Change"
+    #define FR_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define FR_PURGE_MORE           "Purge more"
 
 #endif

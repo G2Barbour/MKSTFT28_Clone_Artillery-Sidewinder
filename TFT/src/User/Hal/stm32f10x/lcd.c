@@ -134,7 +134,7 @@ void LCD_WR_DATA(u16 data)
 u16 LCD_RD_DATA(void)
 {
   #if defined(MKS_32_V1_4) || defined(MKS_28_V1_0)
-  	LCD_RS_SET;
+  LCD_RS_SET;
 	LCD_CS_CLR;
 	//��ȡ����(���Ĵ���ʱ,������Ҫ��2��)
 	LCD_RD_CLR;

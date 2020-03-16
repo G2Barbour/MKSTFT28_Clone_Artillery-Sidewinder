@@ -152,5 +152,7 @@
     #define RU_MOVE_SPEED           "Скорость (X Y Z)"
     #define RU_KNOB_LED             "Rotary Knob LED"
     #define RU_M0_PAUSE             "Paused by M0 command"
-    
+    #define RU_FILAMENT_CHANGE      "Filament Change"
+    #define RU_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define RU_PURGE_MORE           "Purge more"
 #endif

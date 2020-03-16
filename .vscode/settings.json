@@ -2,6 +2,9 @@
     "files.associations": {
         "w25qxx.h": "c",
         "settings.h": "c",
-        "includes.h": "c"
+        "includes.h": "c",
+        "printing.h": "c",
+        "variants.h": "c",
+        "gcode.h": "c"
     }
 }

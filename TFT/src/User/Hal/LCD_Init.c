@@ -229,7 +229,7 @@ void LCD_init_RGB(void)
   LCD_WR_REG(0x29); //display on
 }
 
-#elif defined(MKS_32_V1_4)  || defined(MKS_28_V1_0)
+#elif defined(MKS_32_V1_4) || defined(MKS_28_V1_0)
 
 #elif defined(TFT28_V3_0)
 void LCD_init_RGB(void)
@@ -392,7 +392,7 @@ void LCD_init_RGB(void)
   Delay_ms(120);
   LCD_WR_REG(0x29); //Display on
 }
-#elif defined(MKS_32_V1_4)
+#elif defined(MKS_32_V1_4) || defined(MKS_28_V1_0)
 
 void LCD_init_RGB(void) 
 {

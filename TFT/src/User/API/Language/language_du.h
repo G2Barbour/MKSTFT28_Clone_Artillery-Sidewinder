@@ -152,5 +152,7 @@
     #define DU_MOVE_SPEED           "Bewegingssnelheid(X Y Z)"
     #define DU_KNOB_LED             "Rotary Knob LED"
     #define DU_M0_PAUSE             "Paused by M0 command"
-
+    #define DU_FILAMENT_CHANGE      "Filament Change"
+    #define DU_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define DU_PURGE_MORE           "Purge more"
 #endif

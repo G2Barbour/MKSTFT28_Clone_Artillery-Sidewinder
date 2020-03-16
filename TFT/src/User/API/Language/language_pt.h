@@ -152,5 +152,7 @@
     #define PT_MOVE_SPEED           "Move speed(X Y Z)"
     #define PT_KNOB_LED             "Rotary Knob LED"
     #define PT_M0_PAUSE             "Paused by M0 command"
-    
+    #define PT_FILAMENT_CHANGE      "Filament Change"
+    #define PT_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define PT_PURGE_MORE           "Purge more"
 #endif

@@ -938,6 +938,9 @@ const char *const de_pack[LABEL_NUM]={
   DE_MOVE_SPEED,
   DE_KNOB_LED,
   DE_M0_PAUSE,
+  DE_FILAMENT_CHANGE,
+  DE_FILAMENT_CHANGE_INFO,
+  DE_PURGE_MORE,
 };
 
 const char *const cz_pack[LABEL_NUM]={

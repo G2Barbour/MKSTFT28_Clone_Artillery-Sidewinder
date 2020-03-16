@@ -665,19 +665,19 @@ void loopCheckPrinting(void)
   }while(0);
 }
 
-bool setFilamentChange(bool is_Change)
+bool setFilamentChange(bool is_changing)
 {
   static bool pauseLock = false;
   if(pauseLock)                      return false;
   if(!isPrinting())                  return false;
-  if(infoPrinting.pause == is_Change) return false;
+  if(infoPrinting.pause == is_changing) return false;
 
   pauseLock = true;
   switch (infoFile.source)
   {
     case BOARD_SD:
-      infoPrinting.pause = is_Change;    
-      if (is_Change){
+      infoPrinting.pause = is_changing;    
+      if (is_changing){
         request_M25();
       } else {
         request_M24(0);
@@ -686,16 +686,19 @@ bool setFilamentChange(bool is_Change)
       
     case TFT_UDISK:
     case TFT_SD:
+      infoPrinting.pause = is_changing;
+      if(infoPrinting.pause == true){
       while (infoCmd.count != 0) {loopProcess();}
+      }
 
       bool isCoorRelative = coorGetRelative();
       bool isExtrudeRelative = eGetRelative();
       static COORDINATE tmp;
       
-      infoPrinting.pause = is_Change;
       if(infoPrinting.pause)
       {
         //restore status before pause
+        //if pause was triggered through M0/M1 then break      
         coordinateGetAll(&tmp);
         if (isCoorRelative == true)     mustStoreCmd("G90\n");
         if (isExtrudeRelative == true)  mustStoreCmd("M82\n");
@@ -710,7 +713,9 @@ bool setFilamentChange(bool is_Change)
         
         if (isCoorRelative == true)     mustStoreCmd("G91\n");
         if (isExtrudeRelative == true)  mustStoreCmd("M83\n");
-        infoMenu.menu[++infoMenu.cur] = menuFilamentChange;
+ 
+       infoMenu.menu[++infoMenu.cur] = menuFilamentChange;	
+
       }
       else
       {
@@ -729,7 +734,7 @@ bool setFilamentChange(bool is_Change)
       }
       break;
   }
-  resumeToPause(is_Change);
+  resumeToPause(is_changing);
   pauseLock = false;
   return true;
 }
@@ -739,6 +744,8 @@ void menuFilamentChange(void)
   u16 key_num = IDLE_TOUCH;
   static COORDINATE tmp;
   coordinateGetAll(&tmp);
+    //popupDrawPage(bottomDoubleBtn, textSelect(LABEL_WARNING), textSelect(LABEL_STOP_PRINT), textSelect(LABEL_CONFIRM), textSelect(LABEL_CANNEL));
+
   popupDrawPage(bottomDoubleBtn, textSelect(LABEL_FILAMENT_CHANGE), textSelect(LABEL_FILAMENT_CHANGE_INFO), textSelect(LABEL_PURGE_MORE), textSelect(LABEL_CONTINUE));
  
   while(infoMenu.menu[infoMenu.cur] == menuFilamentChange)
@@ -747,9 +754,7 @@ void menuFilamentChange(void)
     switch(key_num)
     {
       case KEY_POPUP_CONFIRM:
-        mustStoreCmd("G1 E%.5f F%d\n", tmp.axis[E_AXIS] + FILAMENT_CHANGE_PURGE_LENGTH, FILAMENT_CHANGE_E_FEEDRATE);
-        mustStoreCmd("G92 E%.5f\n", tmp.axis[E_AXIS]);
-        mustStoreCmd("G1 F%d\n", FILAMENT_CHANGE_E_FEEDRATE);
+        mustStoreCmd("G1 E%.5f F%d\n", FILAMENT_CHANGE_PURGE_LENGTH, FILAMENT_CHANGE_E_FEEDRATE);
         break;
 
       case KEY_POPUP_CANCEL:
@@ -760,5 +765,3 @@ void menuFilamentChange(void)
     loopProcess();
   }
 }
-
-

@@ -152,5 +152,7 @@
     #define ES_MOVE_SPEED           "Move speed(X Y Z)"
     #define ES_KNOB_LED             "Rotary Knob LED"
     #define ES_M0_PAUSE             "Paused by M0 command"
-
+    #define ES_FILAMENT_CHANGE      "Filament Change"
+    #define ES_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define ES_PURGE_MORE           "Purge more"
 #endif

@@ -153,5 +153,8 @@
     #define SK_MOVE_SPEED           "Move speed(X Y Z)"
     #define SK_KNOB_LED             "Rotary Knob LED"
     #define SK_M0_PAUSE             "Paused by M0 command"
+    #define Sk_FILAMENT_CHANGE      "Filament Change"
+    #define SK_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define SK_PURGE_MORE           "Purge more"
 
 #endif

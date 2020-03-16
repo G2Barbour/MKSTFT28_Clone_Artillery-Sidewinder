@@ -91,11 +91,11 @@
 #define NOZZLE_PAUSE_Z_FEEDRATE     600  // (mm/min) Z axis feedrate
 
 // Specify a filament change
-#define FILAMENT_CHANGE_E_FEEDRATE     500
+#define FILAMENT_CHANGE_E_FEEDRATE     500   // (mm/min)
 #define FILAMENT_CHANGE_RETRACT_LENGTH 100   // (mm)
-#define FILAMENT_CHANGE_PURGE_LENGTH 15
+#define FILAMENT_CHANGE_PURGE_LENGTH 15      // (mm)
 #define FILAMENT_CHANGE_X_POSITION     (X_MIN_POS + 10)  // (mm) Must be an integer
-#define FILAMENT_CHANGE_Y_POSITION     (Y_MIN_POS + 10)
+#define FILAMENT_CHANGE_Y_POSITION     (Y_MIN_POS + 10)  // (mm) Must be an integer
 
 
 // Send G29 for auto bed leveling
@@ -209,12 +209,12 @@
 #define CUSTOM_2_GCODE "M21\n"
 #define CUSTOM_3_LABEL "Release Sd Card"
 #define CUSTOM_3_GCODE "M22\n"
-//#define CUSTOM_4_LABEL "Custom4"
-//#define CUSTOM_4_GCODE "M105\n"
-//#define CUSTOM_5_LABEL "Custom5"
-//#define CUSTOM_5_GCODE "M105\n"
-//#define CUSTOM_6_LABEL "Custom6"
-//#define CUSTOM_6_GCODE "M105\n"
+#define CUSTOM_4_LABEL "MBL 1st point"
+#define CUSTOM_4_GCODE "G29 S1\n"
+#define CUSTOM_5_LABEL "MBL 2nd point"
+#define CUSTOM_5_GCODE "G29 S2\n"
+#define CUSTOM_6_LABEL "Save EEPROM"
+#define CUSTOM_6_GCODE "M500\n"
 
 /*
 custom gcode below are compatible only if MENU_LIST_MODE is active

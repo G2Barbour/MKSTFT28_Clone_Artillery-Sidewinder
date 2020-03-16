@@ -152,5 +152,8 @@
     #define CZ_MOVE_SPEED           "Move speed(X Y Z)"
     #define CZ_KNOB_LED             "Rotary Knob LED"
     #define CZ_M0_PAUSE             "Paused by M0 command"
+    #define CZ_FILAMENT_CHANGE      "Filament Change"
+    #define CZ_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define CZ_PURGE_MORE           "Purge more"
 
 #endif

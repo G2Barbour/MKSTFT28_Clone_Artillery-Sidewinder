@@ -152,5 +152,7 @@
     #define IT_MOVE_SPEED           "Move speed(X Y Z)"
     #define IT_KNOB_LED             "Rotary Knob LED"
     #define IT_M0_PAUSE             "Paused by M0 command"
-    
+    #define IT_FILAMENT_CHANGE      "Filament Change"
+    #define IT_FILAMENT_CHANGE_INFO "Insert Filament"
+    #define IT_PURGE_MORE           "Purge more"
 #endif

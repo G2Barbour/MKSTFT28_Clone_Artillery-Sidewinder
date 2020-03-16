@@ -18,7 +18,7 @@ void Hardware_GenericInit(void)
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO , ENABLE);
   GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 #endif
-#ifdef MKS_32_V1_4
+#if defined(MKS_32_V1_4) || defined(MKS_28_V1_0)
 RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);
 GPIO_PinRemapConfig(GPIO_Remap_USART2, ENABLE);
 #endif
@@ -29,9 +29,9 @@ GPIO_PinRemapConfig(GPIO_Remap_USART2, ENABLE);
   readStoredPara();
   LCD_RefreshDirection();  //refresh display direction after reading settings
   scanUpdates();
-  #ifndef MKS_32_V1_4
+  #if defined(MKS_32_V1_4) 
   //causes hang if we deinit spi1 
-  SD_DeInit();
+  //SD_DeInit();
   #endif
   
 #if LCD_ENCODER_SUPPORT

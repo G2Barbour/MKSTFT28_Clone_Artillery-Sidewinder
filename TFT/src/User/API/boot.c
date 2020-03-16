@@ -118,7 +118,7 @@ void updateIcon(void)
 {
   char nowBmp[64];  
   GUI_Clear(BACKGROUND_COLOR);
-  GUI_DispString(100, 5, (u8*)"Icon Updating...!");
+  GUI_DispString(100, 5, (u8*)"Copy Icons...");
 
   if(bmpDecode(BMP_ROOT_DIR"/Logo.bmp", LOGO_ADDR))
   {
