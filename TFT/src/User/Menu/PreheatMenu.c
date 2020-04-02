@@ -10,8 +10,8 @@ LABEL_PREHEAT,
     {ICON_PREHEAT_PLA,          LABEL_PREHEAT_PLA},
     {ICON_PREHEAT_PETG,         LABEL_PREHEAT_PETG},
     {ICON_PREHEAT_ABS,          LABEL_PREHEAT_ABS},
-    {ICON_BACKGROUND,           LABEL_BACKGROUND},
-    {ICON_BACKGROUND,           LABEL_BACKGROUND},
+    {ICON_BED,                 LABEL_BED_65},
+    {ICON_EXTRUDE,             LABEL_EXTRUDE},
 //    {ICON_PREHEAT_CUSTOM1,      LABEL_PREHEAT_CUSTOM1},
 //    {ICON_PREHEAT_CUSTOM2,      LABEL_PREHEAT_CUSTOM2},
     {ICON_PREHEAT_BOTH,         LABEL_PREHEAT_BOTH},
@@ -45,7 +45,7 @@ void menuPreheat(void)
   static TOOLPREHEAT nowHeater = BOTH;
   KEY_VALUES  key_num = KEY_IDLE;
 
-  menuDrawPage(&preheatItems);
+  menuDrawPage(&preheatItems,false);
 
   while(infoMenu.menu[infoMenu.cur] == menuPreheat)
   {
@@ -68,7 +68,8 @@ void menuPreheat(void)
             break;
         }
         break;
-        
+      case KEY_ICON_3: heatSetTargetTemp(BED, preheat_bed_temp[65]); break;
+      case KEY_ICON_4: infoMenu.menu[infoMenu.cur] = menuExtrude; break; 
       case KEY_ICON_5:
         nowHeater = (TOOLPREHEAT)((nowHeater+1) % 3);
         preheatItems.items[key_num] = itemToolPreheat[nowHeater];

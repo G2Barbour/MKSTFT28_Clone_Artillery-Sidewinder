@@ -31,7 +31,7 @@ const ITEM itemBabyStepUnit[ITEM_BABYSTEP_UNIT_NUM] = {
   {ICON_01_MM,                LABEL_01_MM},
   {ICON_1_MM,                 LABEL_1_MM},
 };
-const float item_babystep_unit[ITEM_BABYSTEP_UNIT_NUM] = {0.01f, 0.1f, 1};
+const float item_babystep_unit[ITEM_BABYSTEP_UNIT_NUM] = {0.04f, 0.12f, 1};
 
 static ELEMENTS elementsUnit;
 
@@ -72,7 +72,7 @@ void menuBabyStep(void)
   float now = baby_step_value;
 
   initElements(KEY_ICON_5);
-  menuDrawPage(&babyStepItems);
+  menuDrawPage(&babyStepItems,false);
   showBabyStep();
 
   while(infoMenu.menu[infoMenu.cur] == menuBabyStep)

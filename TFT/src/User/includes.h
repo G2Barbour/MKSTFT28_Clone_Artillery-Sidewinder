@@ -50,8 +50,6 @@
 #include "Gcode/mygcodefs.h"
 #include "flashStore.h"
 #include "parseACK.h"
-#include "Selectmode.h"
-#include "Parametersetting.h"
 
 #include "extend.h"
 
@@ -67,7 +65,6 @@
 #include "More.h"
 #include "Speed.h"
 #include "BabyStep.h"
-#include "ledcolor.h"
 
 #include "Extrude.h"
 #include "Fan.h"

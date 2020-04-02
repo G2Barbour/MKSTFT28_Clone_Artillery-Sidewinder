@@ -5,9 +5,9 @@ MENUITEMS screenSettingsItems = {
 // title
 LABEL_SCREEN_SETTINGS,
 // icon                       label
- {{ICON_ROTATE_UI,            LABEL_ROTATE_UI},
-  {ICON_TOUCHSCREEN_ADJUST,   LABEL_TOUCHSCREEN_ADJUST},
+ {{ICON_TOUCHSCREEN_ADJUST,   LABEL_TOUCHSCREEN_ADJUST},
   {ICON_LANGUAGE,             LABEL_LANGUAGE}, 
+  {ICON_BACKGROUND,           LABEL_BACKGROUND},
   {ICON_BACKGROUND,           LABEL_BACKGROUND},
   {ICON_BACKGROUND,           LABEL_BACKGROUND},
   {ICON_BACKGROUND,           LABEL_BACKGROUND},
@@ -16,7 +16,7 @@ LABEL_SCREEN_SETTINGS,
 };
 
 #ifdef BUZZER_PIN // Speaker
-  #define BUZZER_KEY_INDEX KEY_ICON_3
+  #define BUZZER_KEY_INDEX KEY_ICON_2
 
   #define ITEM_SILENT_NUM 2
   const ITEM itemSilent[ITEM_SILENT_NUM] = {
@@ -103,28 +103,28 @@ void menuScreenSettings(void)
     }
   #endif
 
-  menuDrawPage(&screenSettingsItems);
+  menuDrawPage(&screenSettingsItems,false);
 
   while(infoMenu.menu[infoMenu.cur] == menuScreenSettings)
   {
     key_num = menuKeyGetValue();
     switch(key_num)
     {
-      case KEY_ICON_0:
+     /* case KEY_ICON_0:
         infoSettings.rotate_ui = !infoSettings.rotate_ui;
         LCD_RefreshDirection();
         TSC_Calibration();
-        menuDrawPage(&screenSettingsItems);        
-        break;
+        menuDrawPage(&screenSettingsItems,false);        
+        break;//*/
       
-      case KEY_ICON_1:
+      case KEY_ICON_0:
         TSC_Calibration();
-        menuDrawPage(&screenSettingsItems);
+        menuDrawPage(&screenSettingsItems,false);
         break;
       
-      case KEY_ICON_2: 
+      case KEY_ICON_1: 
         infoSettings.language = (infoSettings.language + 1) % LANGUAGE_NUM;
-        menuDrawPage(&screenSettingsItems);
+        menuDrawPage(&screenSettingsItems,false);
         break;
       
       #ifdef BUZZER_PIN

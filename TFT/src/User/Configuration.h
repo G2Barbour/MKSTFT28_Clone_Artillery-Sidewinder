@@ -1,5 +1,7 @@
 #ifndef _CONFIGRATION_H_
 #define _CONFIGRATION_H_
+//flash mode settings
+
 
 //===========================================================================
 //=========================== Marlin Mode Settings ===========================
@@ -31,22 +33,14 @@
 // Show BTT bootscreen when starting up
 #define SHOW_BTT_BOOTSCREEN
 
-// TFT mode color
-#define TITLE_BACKGROUND_COLOR      BLACK  // Title background color // 0xD928
-#define BACKGROUND_COLOR            BLACK  // Background color // 0x0A29
-#define FONT_COLOR                  WHITE  // Font foreground color
-#define REMINDER_FONT_COLOR         RED    // Reminder font color, such as: "No print attached", "Busy process", etc...
-#define VOLUME_REMINDER_FONT_COLOR  GBLUE  // Volume reminder font color,such as: "Card inserted", "Card removed"
-
-
 #define TOOL_NUM     1    // set in 1~6
 #define EXTRUDER_NUM 1    // set in 1~6
 #define FAN_NUM      1    // set in 1~6
 
-//                       PLA      PETG       ABS
-#define PREHEAT_BED      {60,      70,       100}
-#define PREHEAT_HOTEND   {200,     250,      230}
-#define PREHEAT_TEXT     {"PLA",  "PETG",   "ABS"}
+//                       PLA      PETG       ABS     "CUSTOM1" "CUSTOM2"
+#define PREHEAT_BED      {65,      70,       100,       55,       55}
+#define PREHEAT_HOTEND   {205,     250,      230,       200,      200}
+#define PREHEAT_TEXT     {"PLA",  "PETG",   "ABS",     "T2:",    "T3:"}
 
 #define HEAT_MAX_TEMP    {150,    275,       275,       275,       275,       275,       275}    //max temperature can be set
 #define HEAT_SIGN_ID     {"B:",   "T0:",     "T1:",     "T2:",     "T3:",     "T4:",     "T5:"}
@@ -64,9 +58,8 @@
 #define SPEED_ID         {"Sp.", "Fr."}
 
 // Default move speed mm/min
-#define DEFAULT_SPEED_MOVE      3000
-#define SPEED_MOVE_SLOW         1000
-#define SPEED_MOVE_FAST         5000
+#define DEFAULT_SPEED_MOVE      5000
+
 // Extrude speed mm/min
 #define EXTRUDE_SLOW_SPEED      60
 #define EXTRUDE_NORMAL_SPEED    600
@@ -76,27 +69,19 @@
 #define X_MIN_POS 0
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
-#define X_MAX_POS 235
-#define Y_MAX_POS 235
-#define Z_MAX_POS 250
+#define X_MAX_POS 300
+#define Y_MAX_POS 300
+#define Z_MAX_POS 400
 
 // Specify a pause position as { X, Y, Z_raise }
 #define NOZZLE_PAUSE_RETRACT_LENGTH 15   // (mm)
 #define NOZZLE_RESUME_PURGE_LENGTH  16   // (mm)
 #define NOZZLE_PAUSE_X_POSITION     (X_MIN_POS + 10)  // (mm) Must be an integer
-#define NOZZLE_PAUSE_Y_POSITION     (Y_MIN_POS + 10)  // (mm) Must be an integer
-#define NOZZLE_PAUSE_Z_RAISE        20   // (mm)
+#define NOZZLE_PAUSE_Y_POSITION     (Y_MAX_POS -50)  // (mm) Must be an integer
+#define NOZZLE_PAUSE_Z_RAISE        50   // (mm)
 #define NOZZLE_PAUSE_E_FEEDRATE     6000 // (mm/min) retract & purge feedrate
 #define NOZZLE_PAUSE_XY_FEEDRATE    6000 // (mm/min) X and Y axes feedrate
 #define NOZZLE_PAUSE_Z_FEEDRATE     600  // (mm/min) Z axis feedrate
-
-// Specify a filament change
-#define FILAMENT_CHANGE_E_FEEDRATE     500   // (mm/min)
-#define FILAMENT_CHANGE_RETRACT_LENGTH 100   // (mm)
-#define FILAMENT_CHANGE_PURGE_LENGTH 15      // (mm)
-#define FILAMENT_CHANGE_X_POSITION     (X_MIN_POS + 10)  // (mm) Must be an integer
-#define FILAMENT_CHANGE_Y_POSITION     (Y_MIN_POS + 10)  // (mm) Must be an integer
-
 
 // Send G29 for auto bed leveling
 #define AUTO_BED_LEVELING
@@ -107,14 +92,16 @@
 #endif
 
 // Move to four corner points to Leveling manually (Point 1, Point 2, Point 3, Point 4)
-#define LEVELING_POINT_1_X         (X_MIN_POS + 20)
-#define LEVELING_POINT_1_Y         (Y_MIN_POS + 20)
-#define LEVELING_POINT_2_X         (X_MAX_POS - 20)
-#define LEVELING_POINT_2_Y         (Y_MIN_POS + 20)
-#define LEVELING_POINT_3_X         (X_MAX_POS - 20)
-#define LEVELING_POINT_3_Y         (Y_MAX_POS - 20)
-#define LEVELING_POINT_4_X         (X_MIN_POS + 20)
-#define LEVELING_POINT_4_Y         (Y_MAX_POS - 20)
+#define LEVELING_POINT_1_X         (X_MIN_POS + 50)
+#define LEVELING_POINT_1_Y         (Y_MIN_POS + 50)
+#define LEVELING_POINT_2_X         (X_MAX_POS - 50)
+#define LEVELING_POINT_2_Y         (Y_MIN_POS + 50)
+#define LEVELING_POINT_3_X         (X_MAX_POS - 50)
+#define LEVELING_POINT_3_Y         (Y_MAX_POS - 50)
+#define LEVELING_POINT_4_X         (X_MIN_POS + 50)
+#define LEVELING_POINT_4_Y         (Y_MAX_POS - 50)
+#define LEVELING_POINT_5_X         (X_MAX_POS / 2)
+#define LEVELING_POINT_5_Y         (Y_MAX_POS / 2)
 #define LEVELING_POINT_Z           0.2f  // Z-axis position when nozzle stays for leveling
 #define LEVELING_POINT_MOVE_Z      10.0f // Z-axis position when nozzle move to next point
 #define LEVELING_POINT_XY_FEEDRATE 6000  // (mm/min) X and Y axes move feedrate
@@ -124,8 +111,8 @@
 #define PS_ON_ACTIVE_HIGH    true   // Set 'false' for ATX (1), 'true' for X-Box (2)
 
 // Filament runout detection
-#define FIL_RUNOUT_INVERTING true  // Set to false to invert the logic of the sensor.
-#define FIL_NOISE_THRESHOLD  10     // 10*10 = 100ms,  Pause print when filament runout is detected for 100ms.
+#define FIL_RUNOUT_INVERTING false  // Set to false to invert the logic of the sensor.
+#define FIL_NOISE_THRESHOLD  100     // 10*10 = 100ms,  Pause print when filament runout is detected for 100ms.
 
 // Smart filament runout detection
 // For use with an encoder disc that toggles runout pin as filament moves
@@ -133,34 +120,34 @@
 
 // Enable alternative Move Menu Buttons Layout matching the direction of actual printer axis.
 // update the icons from alternate icon folder
-#define ALTERNATIVE_MOVE_MENU
+//#define ALTERNATIVE_MOVE_MENU
 
-// Invert the Y Axis move Direction
-// this does not work if LIST MODE is enabled. To invert y axis in LIST MODE go to setting->feature settings
-//#define INVERT_YAXIS
+//Invert the Y Axis move Direction
+#define INVERT_YAXIS
 
-//Invert the Z Axis move Direction
-// this does not work if LIST MODE is enabled. To invert z axis in LIST MODE go to setting->feature settings
-//#define INVERT_ZAXIS
 
 // Enable Unified Move Menu
 // Move, Home, Extrude, ABL at one Place and bring Gcode Menu on Home Menu
-//#define UNIFIED_MENU
+#define UNIFIED_MENU
+
+//Enable Status Screen
+//----USE ICONS FROM MATERIAL THEME ONLY---//
+#define STATUS_SCREEN
 
 /**
- * Enable list mode in Files menu and settings menu
+ * Enable gocde files list mode
  * It is friendly to display long file name, but the model preview feature is not available
  * Disable this if you want to use the model preview feature
  */
-#define MENU_LIST_MODE
+//#define GCODE_LIST_MODE
 
 
 //-------RESET SETTINGS & TOUCH SCREEN CALIBRATION------||
-// To reset the touch screen create a text file with name 'reset.txt' in root folder of the sd card and press reset button.
+//to reset the touch screen create a text file with name 'reset.txt' in root folder of the sd card and press reset button.
 
 
 // SD support
-#define ONBOARD_SD_SUPPORT
+//#define ONBOARD_SD_SUPPORT
 #ifdef ONBOARD_SD_SUPPORT
   #define M27_AUTOREPORT                      // Disable M27 polling if you enable enable AUTO_REPORT_SD_STATUS in Marlin
   #define M27_REFRESH                3        // Time in sec for M27 command
@@ -190,6 +177,10 @@
 #define EXTRUDE_STEPS  100.0f
 
 #define SHOW_FAN_PERCENTAGE // enable to show fan speed as a percentage instead of a value
+/** CUSTOM LABELS//*/
+
+#define LABEL_POINT_5 "Center"
+#define LABEL_BED_65 "Bed 65"
 
 /** CUSTOM GCODE COMMANDS
  * Support up to 7 custom gcodes in Icon mode and 15 in List Mode.
@@ -201,20 +192,20 @@
  * The format of the custom icon is as follows
  * Bit depth: 24 / 32 bit, Pixel size: 95*95(for TFT35), 70*70(for TFT28/TFT24)
  */
-#define CUSTOM_0_LABEL "Restore EEPROM"
-#define CUSTOM_0_GCODE "M501\n"
-#define CUSTOM_1_LABEL "Disable Steppers"
-#define CUSTOM_1_GCODE "M84\n"
-#define CUSTOM_2_LABEL "init SD Card"
-#define CUSTOM_2_GCODE "M21\n"
-#define CUSTOM_3_LABEL "Release Sd Card"
-#define CUSTOM_3_GCODE "M22\n"
-#define CUSTOM_4_LABEL "MBL 1st point"
-#define CUSTOM_4_GCODE "G29 S1\n"
-#define CUSTOM_5_LABEL "MBL 2nd point"
-#define CUSTOM_5_GCODE "G29 S2\n"
-#define CUSTOM_6_LABEL "Save EEPROM"
-#define CUSTOM_6_GCODE "M500\n"
+#define CUSTOM_0_LABEL "PRESENTBED"
+#define CUSTOM_0_GCODE "G90\nG0 F3000 X0 Y250\n"
+#define CUSTOM_1_LABEL "Z +100"
+#define CUSTOM_1_GCODE "G91\nG0 F3000 Z+100\nG90\n"
+#define CUSTOM_2_LABEL "ABS Z 10"
+#define CUSTOM_2_GCODE "G90\nG0 F2000 Z10\n"
+#define CUSTOM_3_LABEL "PIDTUNE E"
+#define CUSTOM_3_GCODE "M42 P4 S0\nM42 P5 S255\nM42 P6 S0\nM303 S210 C8 U1\nM500\nM42 P5 S0 \nM42 P6 S255\n"
+#define CUSTOM_4_LABEL "PIDTUNE B"
+#define CUSTOM_4_GCODE "M42 P4 S0\nM42 P5 S255\nM42 P6 S0\nM303 S65 E-1 C8 U1\nM500\nM42 P5 S0 \nM42 P6 S255\n"
+#define CUSTOM_5_LABEL "EXTR.100mm"
+#define CUSTOM_5_GCODE "G91\nG0 F300 E100\nG90\n"
+//#define CUSTOM_6_LABEL "SaveEEPROM"
+//#define CUSTOM_6_GCODE "M500\n"
 
 /*
 custom gcode below are compatible only if MENU_LIST_MODE is active
@@ -238,6 +229,6 @@ custom gcode below are compatible only if MENU_LIST_MODE is active
 //#define CUSTOM_14_GCODE "M105\n"
 #endif
 
-#define CANCEL_PRINT_GCODE "G28 X0 Y0\n"
+#define CANCEL_PRINT_GCODE "G28 X0 Y0\nG0 F3000 X0 Y250\n"
 
 #endif

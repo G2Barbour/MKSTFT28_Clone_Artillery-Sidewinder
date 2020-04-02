@@ -13,7 +13,7 @@ void menuIsPause(void)
     switch(key_num)
     {
       case KEY_POPUP_CONFIRM:
-				if(setPrintPause(true,false))
+				if(setPrintPause(true))
 			    infoMenu.menu[infoMenu.cur]=menuExtrude;
 			  break;
 
@@ -43,7 +43,7 @@ void menuMore(void)
 {
   KEY_VALUES  key_num = KEY_IDLE;
 
-  menuDrawPage(&moreItems);
+  menuDrawPage(&moreItems,false);
   while(infoMenu.menu[infoMenu.cur] == menuMore)
   {
     key_num = menuKeyGetValue();

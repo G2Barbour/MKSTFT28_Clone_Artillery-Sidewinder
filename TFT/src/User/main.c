@@ -3,6 +3,9 @@
 HOST  infoHost;  // Information interaction with Marlin
 MENU  infoMenu;  // Menu structure
 
+
+//Setup all GPIO not just LCD based ones -- darkspr1te 
+
 void Hardware_GenericInit(void)
 {
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
@@ -13,27 +16,31 @@ void Hardware_GenericInit(void)
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO , ENABLE);
   GPIO_PinRemapConfig(GPIO_Remap_SWJ_Disable, ENABLE); //disable JTAG & SWD
 #endif
+  
  
 #ifdef DISABLE_JTAG
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO , ENABLE);
   GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 #endif
-#if defined(MKS_32_V1_4) || defined(MKS_28_V1_0)
+
+
+
+ //GPIO_Remap_USART2 
 RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);
 GPIO_PinRemapConfig(GPIO_Remap_USART2, ENABLE);
-#endif
 
   XPT2046_Init();
   W25Qxx_Init();
   LCD_Init();
   readStoredPara();
   LCD_RefreshDirection();  //refresh display direction after reading settings
+  GUI_Clear(BLACK);
+  GUI_DispString(100, 0, (u8*)"System Start");
+  Delay_ms(500);
   scanUpdates();
-  #if defined(MKS_32_V1_4) 
-  //causes hang if we deinit spi1 
+  //causes a hang but no code is executed , bug 
   //SD_DeInit();
-  #endif
-  
+
 #if LCD_ENCODER_SUPPORT
   LCD_EncoderInit();
 #endif
@@ -45,13 +52,14 @@ GPIO_PinRemapConfig(GPIO_Remap_USART2, ENABLE);
 #ifdef FIL_RUNOUT_PIN
   FIL_Runout_Init();
 #endif
-
+//storePara();
   if(readStoredPara() == false) // Read settings parameter
   {    
-    TSC_Calibration();
-    storePara();
+   TSC_Calibration();
+   storePara();
   }
-  GUI_RestoreColorDefault();
+    
+ 
   infoMenuSelect();
 }
 

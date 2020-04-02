@@ -39,6 +39,9 @@ static bool    update_waiting = M27_WATCH_OTHER_SOURCES;
 static bool    update_waiting = false;
 #endif
 
+     static COORDINATE coord;
+     uint16_t zLength = 4;
+
 //
 bool isPrinting(void)
 {
@@ -49,11 +52,6 @@ bool isPrinting(void)
 bool isPause(void)
 {
   return infoPrinting.pause;
-}
-
-bool isM0_Pause(void)
-{
-return infoPrinting.m0_pause;
 }
 
 //
@@ -97,12 +95,16 @@ void printSetUpdateWaiting(bool isWaiting)
 
 void startGcodeExecute(void)
 {    
-
+//storeCmd("M220 S100\nM221 S100\n");//reset print speed to 100%
+//storeCmd("M42 P4 S0\nM42 P5 S0\nM42 P6 S255\n");
 }
 
 void endGcodeExecute(void)
 {
+  //mustStoreCmd("G0 Z%d F3000\n", limitValue(0, (int)coordinateGetAxisTarget(Z_AXIS) + 10, Z_MAX_POS));
   mustStoreCmd("G90\n");
+  //storeCmd("G0 F3000 X0 Y250\n");//"M42 P4 S0\nM42 P5 S0\nM42 P6 S255\n");//reset print speed to 100%//M42 P5 S0 ;LED RED OFFM42 P6 S255 ;LED GREEN ON
+  storeCmd("M42 P4 S255\nM42 P5 S255\nM42 P6 S255\n");
   mustStoreCmd("G92 E0\n");
   for(TOOL i = BED; i < HEATER_NUM; i++)
   {
@@ -115,6 +117,7 @@ void endGcodeExecute(void)
   mustStoreCmd("T0\n");
   mustStoreCmd("M18\n");
 }
+
 
 //only return gcode file name except path
 //for example:"SD:/test/123.gcode"
@@ -202,11 +205,7 @@ void resumeToPause(bool is_pause)
   menuDrawItem(&itemIsPause[is_pause],0);
 }
 
-void setM0Pause(bool m0_pause){
-  infoPrinting.m0_pause = m0_pause;
-}
-
-bool setPrintPause(bool is_pause, bool is_m0pause)
+bool setPrintPause(bool is_pause)
 {
   static bool pauseLock = false;
   if(pauseLock)                      return false;
@@ -227,25 +226,16 @@ bool setPrintPause(bool is_pause, bool is_m0pause)
       
     case TFT_UDISK:
     case TFT_SD:
-      infoPrinting.pause = is_pause;
-      if(infoPrinting.pause == true && is_m0pause == false){
       while (infoCmd.count != 0) {loopProcess();}
-      }
 
       bool isCoorRelative = coorGetRelative();
       bool isExtrudeRelative = eGetRelative();
       static COORDINATE tmp;
       
+      infoPrinting.pause = is_pause;
       if(infoPrinting.pause)
       {
         //restore status before pause
-        //if pause was triggered through M0/M1 then break
-      if(is_m0pause == true) {
-        setM0Pause(is_m0pause);
-        popupReminder(textSelect(LABEL_PAUSE), textSelect(LABEL_M0_PAUSE));
-        break;
-        }
-      
         coordinateGetAll(&tmp);
         if (isCoorRelative == true)     mustStoreCmd("G90\n");
         if (isExtrudeRelative == true)  mustStoreCmd("M82\n");
@@ -263,11 +253,6 @@ bool setPrintPause(bool is_pause, bool is_m0pause)
       }
       else
       {
-      if(isM0_Pause() == true) {
-        setM0Pause(is_m0pause);
-        Serial_Puts(SERIAL_PORT, "M108\n");
-        break;
-        }
         if (isCoorRelative == true)     mustStoreCmd("G90\n");
         if (isExtrudeRelative == true)  mustStoreCmd("M82\n");
         
@@ -291,23 +276,23 @@ bool setPrintPause(bool is_pause, bool is_m0pause)
   return true;
 }
 
-const GUI_RECT progressRect = {1*SPACE_X_PER_ICON, 0*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y + ICON_HEIGHT/4,
-                               3*SPACE_X_PER_ICON, 0*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y + ICON_HEIGHT*3/4};
+const GUI_RECT progressRect = {1*SPACE_X_PER_ICON, 0*ICON_HEIGHT+0*SPACE_Y+TITLE_END_Y + ICON_HEIGHT/4,
+                               3*SPACE_X_PER_ICON, 0*ICON_HEIGHT+0*SPACE_Y+TITLE_END_Y + ICON_HEIGHT*3/4};
 
 #define BED_X  (progressRect.x1 - 9 * BYTE_WIDTH)
 #define TEMP_Y (progressRect.y1 + 3)
 #define TIME_Y (TEMP_Y + 1 * BYTE_HEIGHT + 3)
 void reValueNozzle(void)
 {
-  GUI_DispString(BED_X, TEMP_Y-2*BYTE_HEIGHT, (u8* )heatDisplayID[heatGetCurrentToolNozzle()]);
-  GUI_DispDec(BED_X + 2 * BYTE_WIDTH, TEMP_Y-2*BYTE_HEIGHT , heatGetCurrentTemp(heatGetCurrentToolNozzle()), 3, RIGHT);
-  GUI_DispDec(BED_X + 6 * BYTE_WIDTH, TEMP_Y-2*BYTE_HEIGHT, heatGetTargetTemp(heatGetCurrentToolNozzle()),  3, LEFT);
+  GUI_DispString(progressRect.x0, TEMP_Y, (u8* )heatDisplayID[heatGetCurrentToolNozzle()]);
+  GUI_DispDec(progressRect.x0+BYTE_WIDTH*3, TEMP_Y, heatGetCurrentTemp(heatGetCurrentToolNozzle()), 3, RIGHT);
+  GUI_DispDec(progressRect.x0+BYTE_WIDTH*7, TEMP_Y, heatGetTargetTemp(heatGetCurrentToolNozzle()),  3, LEFT);
 }
 
 void reValueBed(void)
 {
-  GUI_DispDec(BED_X + 2 * BYTE_WIDTH, TEMP_Y-BYTE_HEIGHT, heatGetCurrentTemp(BED), 3, RIGHT);
-  GUI_DispDec(BED_X + 6 * BYTE_WIDTH, TEMP_Y-BYTE_HEIGHT, heatGetTargetTemp(BED),  3, LEFT);
+  GUI_DispDec(BED_X + 2 * BYTE_WIDTH, TEMP_Y, heatGetCurrentTemp(BED), 3, RIGHT);
+  GUI_DispDec(BED_X + 6 * BYTE_WIDTH, TEMP_Y, heatGetTargetTemp(BED),  3, LEFT);
 }
 
 void reDrawTime(void)
@@ -322,16 +307,39 @@ void reDrawTime(void)
   GUI_SetNumMode(GUI_NUMMODE_SPACE);
 }
 
+void reDrawZpos(void)
+{
+  float lastZ = coord.axis[Z_AXIS];
+  uint16_t lastZLength = zLength;
+  coordinateGetAll(&coord);
+  if(coord.axis[Z_AXIS] >= 10)zLength = 5;
+  else{zLength = 4;}
+  if(coord.axis[Z_AXIS]>=100)zLength = 6;
+  if(lastZLength > zLength){
+    uint16_t fontColor = GUI_GetColor();
+  GUI_SetColor(0);
+  GUI_DispFloat(BED_X+BYTE_WIDTH*2,TEMP_Y-BYTE_HEIGHT*3.5,lastZ,3,2,LEFT);
+  GUI_SetColor(fontColor);     
+}
+GUI_DispFloat(BED_X+BYTE_WIDTH*2,TEMP_Y-BYTE_HEIGHT*3.5,coord.axis[Z_AXIS],3,2,LEFT);
+
+}
+
 void reDrawProgress(u8 progress)
 {	  
   char buf[5];
-  const GUI_RECT percentageRect = {BED_X, TEMP_Y-3*BYTE_HEIGHT, BED_X+5*BYTE_WIDTH, TEMP_Y-2*BYTE_HEIGHT};
-  //GUI_FillRectColor(progressRect.x0, progressRect.y0, progressX, progressRect.y1,BLUE);
-  //GUI_FillRectColor(progressX, progressRect.y0, progressRect.x1, progressRect.y1,GRAY);
+  u16 progressX = map(progress, 0, 100, progressRect.x0, progressRect.x1);
+  GUI_FillRectColor(progressRect.x0, progressRect.y0, progressX, progressRect.y1,BLUE);
+  GUI_FillRectColor(progressX, progressRect.y0, progressRect.x1, progressRect.y1,GRAY);
   my_sprintf(buf, "%d%%", progress);
-  //GUI_SetTextMode(GUI_TEXTMODE_TRANS);
-  GUI_DispStringInPrect(&percentageRect, (u8 *)buf);    
-  //GUI_SetTextMode(GUI_TEXTMODE_NORMAL);                     
+  GUI_SetTextMode(GUI_TEXTMODE_TRANS);
+  uint16_t fontColor = GUI_GetColor();
+  GUI_SetColor(0);
+
+
+  GUI_DispStringInPrect(&progressRect, (u8 *)buf);    
+  GUI_SetTextMode(GUI_TEXTMODE_NORMAL);  
+   GUI_SetColor(fontColor);                   
 }
 
 extern SCROLL   titleScroll;
@@ -340,31 +348,26 @@ extern GUI_RECT titleRect;
 
 void printingDrawPage(void)
 {
-  int16_t i;
-  menuDrawPage(&printingItems);
+  menuDrawPage(&printingItems,false);
   //	Scroll_CreatePara(&titleScroll, infoFile.title,&titleRect);  //
   // printed time
   GUI_DispString(progressRect.x0, TIME_Y, (u8* )"T:");
   GUI_DispString(progressRect.x0+BYTE_WIDTH*4, TIME_Y, (u8* )":");
   GUI_DispString(progressRect.x0+BYTE_WIDTH*7, TIME_Y, (u8* )":");
+  // Z axis position 
+GUI_DispString(BED_X, TEMP_Y-BYTE_HEIGHT*3.5, (u8* )("Z:"));
   // nozzle temperature 
-  GUI_DispString(BED_X, TEMP_Y-2*BYTE_HEIGHT ,(u8* )":");
-  GUI_DispString(BED_X+BYTE_WIDTH*5, TEMP_Y-2*BYTE_HEIGHT,(u8* )"/");
+  GUI_DispString(progressRect.x0+BYTE_WIDTH*2, TEMP_Y,(u8* )":");
+  GUI_DispString(progressRect.x0+BYTE_WIDTH*6, TEMP_Y,(u8* )"/");
   // hotbed temperature
-  GUI_DispString(BED_X, TEMP_Y-BYTE_HEIGHT, (u8* )"B:");
-  GUI_DispString(BED_X+BYTE_WIDTH*5, TEMP_Y-BYTE_HEIGHT, (u8* )"/");
+  GUI_DispString(BED_X, TEMP_Y, (u8* )"B:");
+  GUI_DispString(BED_X+BYTE_WIDTH*5, TEMP_Y, (u8* )"/");
   reDrawProgress(infoPrinting.progress);
   reValueNozzle();
   reValueBed();
   reDrawTime();
-  // z_axis coordinate
-  GUI_DispString(BED_X,TIME_Y-BYTE_HEIGHT, (u8* )"Z:");
-
-  i = get_Pre_Icon((char *)getCurGcodeName(infoFile.title));
-  if(i != ICON_BACKGROUND)
-  lcd_frame_display(1*ICON_WIDTH+1*SPACE_X+START_X,  0*ICON_HEIGHT+0*SPACE_Y+ICON_START_Y,ICON_WIDTH,ICON_HEIGHT,ICON_ADDR(i));
+  reDrawZpos();
 }
-
 
 void menuPrinting(void)	
 {
@@ -417,16 +420,12 @@ void menuPrinting(void)
       time=infoPrinting.time;
       reDrawTime();
     }
-    //Z_AXIS coordinate
-    static COORDINATE tmp;
-    coordinateGetAll(&tmp);
-    GUI_DispFloat(BED_X+BYTE_WIDTH*2,TIME_Y-BYTE_HEIGHT,tmp.axis[Z_AXIS],3,3,LEFT);
-    
+reDrawZpos();
     key_num = menuKeyGetValue();
     switch(key_num)
     {
       case KEY_ICON_0:
-        setPrintPause(!isPause(),false);
+        setPrintPause(!isPause());
         break;
       
       case KEY_ICON_3:
@@ -494,7 +493,10 @@ void completePrinting(void)
   {
 		infoMenu.menu[++infoMenu.cur] = menuShutDown;
   }
+  exitPrinting();
+  infoMenu.cur-=3;
 }
+
 
 void abortPrinting(void)
 {
@@ -665,103 +667,6 @@ void loopCheckPrinting(void)
   }while(0);
 }
 
-bool setFilamentChange(bool is_changing)
-{
-  static bool pauseLock = false;
-  if(pauseLock)                      return false;
-  if(!isPrinting())                  return false;
-  if(infoPrinting.pause == is_changing) return false;
 
-  pauseLock = true;
-  switch (infoFile.source)
-  {
-    case BOARD_SD:
-      infoPrinting.pause = is_changing;    
-      if (is_changing){
-        request_M25();
-      } else {
-        request_M24(0);
-      }
-      break;
-      
-    case TFT_UDISK:
-    case TFT_SD:
-      infoPrinting.pause = is_changing;
-      if(infoPrinting.pause == true){
-      while (infoCmd.count != 0) {loopProcess();}
-      }
 
-      bool isCoorRelative = coorGetRelative();
-      bool isExtrudeRelative = eGetRelative();
-      static COORDINATE tmp;
-      
-      if(infoPrinting.pause)
-      {
-        //restore status before pause
-        //if pause was triggered through M0/M1 then break      
-        coordinateGetAll(&tmp);
-        if (isCoorRelative == true)     mustStoreCmd("G90\n");
-        if (isExtrudeRelative == true)  mustStoreCmd("M82\n");
-        
-        if (heatGetCurrentTemp(heatGetCurrentToolNozzle()) > PREVENT_COLD_EXTRUSION_MINTEMP)
-          mustStoreCmd("G1 E%.5f F%d\n", tmp.axis[E_AXIS] - FILAMENT_CHANGE_RETRACT_LENGTH, NOZZLE_PAUSE_E_FEEDRATE);
-        if (coordinateIsClear())
-        {
-          mustStoreCmd("G1 Z%.3f F%d\n", tmp.axis[Z_AXIS] + NOZZLE_PAUSE_Z_RAISE, NOZZLE_PAUSE_Z_FEEDRATE);
-          mustStoreCmd("G1 X%d Y%d F%d\n", NOZZLE_PAUSE_X_POSITION, NOZZLE_PAUSE_Y_POSITION, NOZZLE_PAUSE_XY_FEEDRATE);
-        }
-        
-        if (isCoorRelative == true)     mustStoreCmd("G91\n");
-        if (isExtrudeRelative == true)  mustStoreCmd("M83\n");
- 
-       infoMenu.menu[++infoMenu.cur] = menuFilamentChange;	
 
-      }
-      else
-      {
-        if (isCoorRelative == true)     mustStoreCmd("G90\n");
-        if (isExtrudeRelative == true)  mustStoreCmd("M82\n");
-        
-        if (coordinateIsClear())
-        {
-          mustStoreCmd("G1 X%.3f Y%.3f F%d\n", tmp.axis[X_AXIS], tmp.axis[Y_AXIS], NOZZLE_PAUSE_XY_FEEDRATE);
-          mustStoreCmd("G1 Z%.3f F%d\n", tmp.axis[Z_AXIS], NOZZLE_PAUSE_Z_FEEDRATE);
-        }
-        if(heatGetCurrentTemp(heatGetCurrentToolNozzle()) > PREVENT_COLD_EXTRUSION_MINTEMP)
-        
-        if (isCoorRelative == true)     mustStoreCmd("G91\n");
-        if (isExtrudeRelative == true)  mustStoreCmd("M83\n");
-      }
-      break;
-  }
-  resumeToPause(is_changing);
-  pauseLock = false;
-  return true;
-}
-
-void menuFilamentChange(void)
-{
-  u16 key_num = IDLE_TOUCH;
-  static COORDINATE tmp;
-  coordinateGetAll(&tmp);
-    //popupDrawPage(bottomDoubleBtn, textSelect(LABEL_WARNING), textSelect(LABEL_STOP_PRINT), textSelect(LABEL_CONFIRM), textSelect(LABEL_CANNEL));
-
-  popupDrawPage(bottomDoubleBtn, textSelect(LABEL_FILAMENT_CHANGE), textSelect(LABEL_FILAMENT_CHANGE_INFO), textSelect(LABEL_PURGE_MORE), textSelect(LABEL_CONTINUE));
- 
-  while(infoMenu.menu[infoMenu.cur] == menuFilamentChange)
-  {
-    key_num = KEY_GetValue(2, doubleBtnRect);
-    switch(key_num)
-    {
-      case KEY_POPUP_CONFIRM:
-        mustStoreCmd("G1 E%.5f F%d\n", FILAMENT_CHANGE_PURGE_LENGTH, FILAMENT_CHANGE_E_FEEDRATE);
-        break;
-
-      case KEY_POPUP_CANCEL:
-        setFilamentChange(!isPause());
-        infoMenu.cur-=1;
-        break;		
-    }
-    loopProcess();
-  }
-}

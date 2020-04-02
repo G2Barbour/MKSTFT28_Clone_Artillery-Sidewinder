@@ -10,8 +10,8 @@ lABEL_UNIFIEDHEAT,
   {ICON_HEAT,                 LABEL_HEAT},
   {ICON_FAN,                  LABEL_FAN},
   {ICON_COOLDOWN,             LABEL_COOLDOWN},
-  {ICON_BACKGROUND,           LABEL_BACKGROUND},
-  {ICON_BACKGROUND,           LABEL_BACKGROUND},
+  {ICON_EXTRUDE,           LABEL_EXTRUDE},
+  {ICON_MOVE,           LABEL_UNIFIEDMOVE},
   {ICON_BACKGROUND,           LABEL_BACKGROUND},
   {ICON_BACK,                 LABEL_BACK},}
 };
@@ -19,7 +19,7 @@ lABEL_UNIFIEDHEAT,
 void menuUnifiedHeat(void)
 {
   KEY_VALUES key_num = KEY_IDLE;	
-  menuDrawPage(&UnifiedHeatItems);
+  menuDrawPage(&UnifiedHeatItems,false);
   while(infoMenu.menu[infoMenu.cur] == menuUnifiedHeat)
   {
     key_num = menuKeyGetValue();
@@ -35,9 +35,12 @@ void menuUnifiedHeat(void)
         }
         break;
         
-      case KEY_ICON_7: infoMenu.cur--;      break;
+     case KEY_ICON_4: infoMenu.menu[++infoMenu.cur] = menuExtrude; break;
+     case KEY_ICON_5: infoMenu.menu[--infoMenu.cur] = menuUnifiedMove; break;
+       case KEY_ICON_7: infoMenu.cur--;      break;
       default:break;            
     }
     loopProcess();
   }
 }
+

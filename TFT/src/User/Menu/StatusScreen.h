@@ -25,23 +25,15 @@ float getAxisLocation(uint8_t n);
 void gantry_dec(int n, float val);
 void gantry_inc(int n, float val);
 //LCD resolution, font and icon size
-#if defined(TFT35_V1_0) || defined(TFT35_V1_1) || defined(TFT35_V1_2) || defined(TFT35_V2_0) || defined(TFT35_V3_0) 
+#if defined(MKS_32_V1_4)  || defined(MKS_28_Clone_V1_0)
 
-  #define SSICON_VAL_Y0           63
+  #define SSICON_VAL_X0           2
+  #define SSICON_VAL_Y0           47
   //#define  statusicon_val_charcount  7
 
-  #define SSICON_NAME_Y0          7
+  #define SSICON_NAME_X0          44
+  #define SSICON_NAME_Y0          5
   //#define  statusicon_name_charcount  3
-
-  #define STATUS_MSG_ICON_XOFFSET     5
-  #define STATUS_MSG_ICON_YOFFSET     5
-  #define STATUS_MSG_TITLE_XOFFSET    5
-  #define STATUS_MSG_BODY_XOFFSET     0
-  #define STATUS_MSG_BODY_YOFFSET     59
-  #define STATUS_MSG_BODY_BOTTOM      6
-  #define STATUS_TITLE_SHORT          20
-  #define STATUS_GANTRY_YOFFSET       6
-
 
   #define STATUS_MSG_ICON_XOFFSET     3
   #define STATUS_MSG_ICON_YOFFSET     3
@@ -54,23 +46,6 @@ void gantry_inc(int n, float val);
   #define STATUS_GANTRY_YOFFSET       6
   #define INFOBOX_P1_WIDTH            75
   #define INFOBOX_P2_WIDTH            75
-#elif defined(MKS_32_V1_4) || defined(MKS_28_V1_0)
-
-  #define SSICON_VAL_Y0           47
-  //#define  statusicon_val_charcount  7
-
-  #define SSICON_NAME_Y0          5
-  //#define  statusicon_name_charcount  3
-
-  #define STATUS_MSG_ICON_XOFFSET     3
-  #define STATUS_MSG_ICON_YOFFSET     3
-  #define STATUS_MSG_TITLE_XOFFSET    3
-  #define STATUS_MSG_BODY_XOFFSET     0
-  #define STATUS_MSG_BODY_YOFFSET     45
-  #define STATUS_MSG_BODY_BOTTOM      4
-  #define STATUS_TITLE_SHORT          10
-  #define SS_ICON_START_Y              30
-  #define STATUS_GANTRY_YOFFSET       4
-#endif
+  #endif
 
 #endif
