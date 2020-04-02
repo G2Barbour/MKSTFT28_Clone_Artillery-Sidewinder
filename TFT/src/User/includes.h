@@ -85,6 +85,8 @@
 #include "StatusScreen.h"
 #include "list_item.h"
 
+#include "CustomItems.h"
+
 #define MAX_MENU_DEPTH 10       // max sub menu depth
 typedef void (*FP_MENU)(void); 
 
