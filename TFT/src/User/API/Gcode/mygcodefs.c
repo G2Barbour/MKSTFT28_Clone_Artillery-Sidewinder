@@ -37,10 +37,7 @@ bool scanPrintFilesGcodeFs(void)
 {
   clearInfoFile();
 
-  char *ret = request_M20();
-  char *data = malloc(strlen(ret) + 1);
-  strcpy(data,ret);
-  clearRequestCommandInfo();
+  char *data = request_M20();
   char s[3];
   
   if(strstr(data, "\r\n")) //for smoothieware
@@ -64,28 +61,16 @@ bool scanPrintFilesGcodeFs(void)
       if (infoFile.f_num >= FILE_NUM)
         continue; /* Gcode max number is FILE_NUM*/
 
-      char * Pstr_tmp = strrchr (line ,' ');
-      if (Pstr_tmp != NULL) *Pstr_tmp = 0; //remove file size from line
-      char * longfilemane = request_M33(line);
-      Pstr_tmp = strchr (longfilemane ,'\n');
-      if (Pstr_tmp != NULL) *Pstr_tmp = 0; //remove end of M33 command
-      Pstr_tmp = strrchr (longfilemane ,'/'); //remove folder information
-      if (Pstr_tmp == NULL) Pstr_tmp = longfilemane;
-      else Pstr_tmp++;
-      infoFile.Longfile[infoFile.f_num]= malloc(strlen(Pstr_tmp) + 1);      
-      if (infoFile.Longfile[infoFile.f_num] == NULL)
-      {
-        clearRequestCommandInfo();
-        break;
-      } 
-      strcpy(infoFile.Longfile[infoFile.f_num], Pstr_tmp);      
-      clearRequestCommandInfo();  // for M33
-
       char* rest = pline;  
-      char* file = strtok_r(rest," ",&rest);   //remove file size from pline   
-      infoFile.file[infoFile.f_num] = malloc(strlen(file) + 1);
-      if (infoFile.file[infoFile.f_num] == NULL) break;
+      char* file = strtok_r(rest," ",&rest);
+
+      uint16_t len = strlen(file) + 1;
+
+      infoFile.file[infoFile.f_num] = malloc(len);
+      if (infoFile.file[infoFile.f_num] == NULL)
+        break;
       strcpy(infoFile.file[infoFile.f_num++], file);
+
     }
     else
     {
@@ -117,7 +102,6 @@ bool scanPrintFilesGcodeFs(void)
       }
     }
   }
-  free(data);
   return true;
 }
 
