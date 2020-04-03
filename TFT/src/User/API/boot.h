@@ -137,6 +137,8 @@ enum
   ICON_STATUS_FLOW,
   ICON_INFOBOX_PART1,
   ICON_INFOBOX_PART2,
+  ICON_GLOBAL_NOZZLE0,
+  ICON_GLOBAL_BED,
   
 //  ICON_RESERVE
 // Preview should be in the last place
