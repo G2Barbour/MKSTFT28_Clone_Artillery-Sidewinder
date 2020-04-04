@@ -101,8 +101,11 @@ void startGcodeExecute(void)
 
 void endGcodeExecute(void)
 {
+  #ifdef BUZZER_PIN
+    openBuzzer(3, 100);
+  #endif
   //mustStoreCmd("G0 Z%d F3000\n", limitValue(0, (int)coordinateGetAxisTarget(Z_AXIS) + 10, Z_MAX_POS));
-  mustStoreCmd("G90\n");
+  mustStoreCmd("G90\n\n");
   //storeCmd("G0 F3000 X0 Y250\n");//"M42 P4 S0\nM42 P5 S0\nM42 P6 S255\n");//reset print speed to 100%//M42 P5 S0 ;LED RED OFFM42 P6 S255 ;LED GREEN ON
   storeCmd("M42 P4 S255\nM42 P5 S255\nM42 P6 S255\n");
   mustStoreCmd("G92 E0\n");
@@ -116,6 +119,7 @@ void endGcodeExecute(void)
   }
   mustStoreCmd("T0\n");
   mustStoreCmd("M18\n");
+  
 }
 
 
