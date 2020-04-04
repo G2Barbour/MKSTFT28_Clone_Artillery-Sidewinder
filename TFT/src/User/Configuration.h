@@ -139,7 +139,7 @@
  * It is friendly to display long file name, but the model preview feature is not available
  * Disable this if you want to use the model preview feature
  */
-//#define GCODE_LIST_MODE
+#define GCODE_LIST_MODE
 
 
 //-------RESET SETTINGS & TOUCH SCREEN CALIBRATION------||
