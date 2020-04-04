@@ -12,7 +12,7 @@ There is a bug where it is possible to freeze the display when navigating back a
 
 The disconnect feature does not always work on the first try. Unfortunately my printer/computer have had a connection issue since day 1 where I have to make multiple attempts whether I'm using Octoprint or flashing the Marlin firmware, so my setup is not a good candidate for troubleshooting this function. After a few tries it has been working for me. If someone who can code and has a good working printer and computer wants to try, I have shared the source code. All help is welcome!
 
-1.3.6 Ozollo: Deleted uneccesary files from source code and made a few revisions to clean up the code that will not affect performance. G2: Beep added to print completion. List mode enabled on file menu to read long file names. ABL added to "Home" menu. Attempted bug fix for potential menu hangup - sucess unknown as of this time. 
+1.3.6 Ozollo: Deleted uneccesary files from source code and made a few revisions to clean up the code that will not affect performance. G2: Beep added to print completion. List mode enabled on file menu to read long file names. ABL added to "Home" menu. Attempted bug fix for potential menu hangup - success unknown as of this time. 
 
 1.3.5 Ozollo has joined the project and fixed his first bug: M500 added for PID autotune. Prior to version 1.3.5 the PID autotune features in the Custom menu did not autosave. 
 
