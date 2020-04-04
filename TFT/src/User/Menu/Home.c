@@ -11,8 +11,8 @@ LABEL_HOME,
   {ICON_Y_HOME,               LABEL_Y_HOME},
   {ICON_Z_HOME,               LABEL_Z_HOME},
   {ICON_MOVE,           LABEL_MOVE},
-  {ICON_BACKGROUND,           LABEL_BACKGROUND},
-  {ICON_BACKGROUND,           LABEL_BACKGROUND},
+  {ICON_LEVELING,           LABEL_LEVELING},
+  {ICON_LEVELING,           LABEL_ABL},
   {ICON_BACK,                 LABEL_BACK},}
 };
 
@@ -30,6 +30,14 @@ void menuHome(void)
       case KEY_ICON_2: storeCmd("G28 Y\n"); break;
       case KEY_ICON_3: storeCmd("G28 Z\n"); break;
       case KEY_ICON_4: infoMenu.menu[infoMenu.cur] = menuMove; break;
+      case KEY_ICON_5: infoMenu.menu[infoMenu.cur] = menuManualLeveling; break;
+            case KEY_ICON_6:
+        storeCmd("G28\n");
+        storeCmd("G29\n");
+        #ifdef AUTO_SAVE_LOAD_LEVELING_VALUE
+          storeCmd("M500\n");
+        #endif
+        break;
       case KEY_ICON_7: infoMenu.cur--;      break;
       default:break;            
     }
