@@ -140,7 +140,8 @@ void loopFILRunoutDetect(void)
   
   if (setPrintPause(true))
   {
-    popupReminder(textSelect(LABEL_WARNING), textSelect(LABEL_FILAMENT_RUNOUT));
+        openBuzzer(3, 100);
+        popupReminder(textSelect(LABEL_WARNING), textSelect(LABEL_FILAMENT_RUNOUT));
   }
 }
 
