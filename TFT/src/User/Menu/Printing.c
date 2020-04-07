@@ -104,8 +104,9 @@ void endGcodeExecute(void)
   #ifdef BUZZER_PIN
     openBuzzer(3, 100);
   #endif
-  //mustStoreCmd("G0 Z%d F3000\n", limitValue(0, (int)coordinateGetAxisTarget(Z_AXIS) + 10, Z_MAX_POS));
-  mustStoreCmd("G90\n\n");
+  mustStoreCmd("G0 Z%d F3000\n", limitValue(0, (int)coordinateGetAxisTarget(Z_AXIS) + 20, Z_MAX_POS));
+
+  mustStoreCmd("G90\nG0 X0 Y250n");
   //storeCmd("G0 F3000 X0 Y250\n");//"M42 P4 S0\nM42 P5 S0\nM42 P6 S255\n");//reset print speed to 100%//M42 P5 S0 ;LED RED OFFM42 P6 S255 ;LED GREEN ON
   storeCmd("M42 P4 S255\nM42 P5 S255\nM42 P6 S255\n");
   mustStoreCmd("G92 E0\n");
@@ -316,12 +317,12 @@ void reDrawZpos(void)
   float lastZ = coord.axis[Z_AXIS];
   uint16_t lastZLength = zLength;
   coordinateGetAll(&coord);
+  if(coord.axis[Z_AXIS]>=100)zLength = 6;
   if(coord.axis[Z_AXIS] >= 10)zLength = 5;
   else{zLength = 4;}
-  if(coord.axis[Z_AXIS]>=100)zLength = 6;
   if(lastZLength > zLength){
     uint16_t fontColor = GUI_GetColor();
-  GUI_SetColor(0);
+  GUI_SetColor(BK_COLOR);
   GUI_DispFloat(BED_X+BYTE_WIDTH*2,TEMP_Y-BYTE_HEIGHT*3.5,lastZ,3,2,LEFT);
   GUI_SetColor(fontColor);     
 }
