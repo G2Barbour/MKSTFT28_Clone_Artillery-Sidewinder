@@ -317,16 +317,22 @@ void reDrawZpos(void)
   float lastZ = coord.axis[Z_AXIS];
   uint16_t lastZLength = zLength;
   coordinateGetAll(&coord);
-  if(coord.axis[Z_AXIS]>=100)zLength = 6;
-  if(coord.axis[Z_AXIS] >= 10)zLength = 5;
-  else{zLength = 4;}
-  if(lastZLength > zLength){
+
+  if(coord.axis[Z_AXIS] >= 10){
+      if(coord.axis[Z_AXIS] >= 100)zLength = 6;
+      else zLength = 5;
+  }else{ zLength = 4; }
+
+  if(lastZLength > zLength)
+    GUI_ClearRect(BED_X+BYTE_WIDTH*2,TEMP_Y-BYTE_HEIGHT*3.5,BED_X+BYTE_WIDTH*(2 + lastZLength - zLength),TEMP_Y-BYTE_HEIGHT*2.5);
+    /*{
     uint16_t fontColor = GUI_GetColor();
-  GUI_SetColor(BK_COLOR);
-  GUI_DispFloat(BED_X+BYTE_WIDTH*2,TEMP_Y-BYTE_HEIGHT*3.5,lastZ,3,2,LEFT);
-  GUI_SetColor(fontColor);     
-}
-GUI_DispFloat(BED_X+BYTE_WIDTH*2,TEMP_Y-BYTE_HEIGHT*3.5,coord.axis[Z_AXIS],3,2,LEFT);
+    GUI_SetColor(BK_COLOR);
+    GUI_DispFloat(BED_X+BYTE_WIDTH*2,TEMP_Y-BYTE_HEIGHT*3.5,lastZ,3,2,LEFT);
+    GUI_SetColor(fontColor);     
+  }//*/
+  
+  GUI_DispFloat(BED_X+BYTE_WIDTH*2,TEMP_Y-BYTE_HEIGHT*3.5,coord.axis[Z_AXIS],3,2,LEFT);
 
 }
 
